@@ -1,12 +1,17 @@
 package com.order.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
@@ -19,9 +24,13 @@ public class OrderEntity {
 	public Integer orderid;
 	public String customername;
 	public String orderdate;
-	public List<Integer> productid;
+	 @ElementCollection
+	 @CollectionTable(name = "order_product_ids", joinColumns = @JoinColumn(name  = "orderid"))
+	 @Column(name = "productid")
+	public List<Integer> productid = new ArrayList<Integer>(); 
 	@Transient
 	public List<Product> productlist;
+	
 	public Integer getOrderid() {
 		return orderid;
 	}

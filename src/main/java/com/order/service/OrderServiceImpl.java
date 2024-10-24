@@ -22,17 +22,19 @@ public class OrderServiceImpl implements OrderService {
 
 	public OrderEntity createOrder(OrderEntity order) {
 		List<Product> productList = new ArrayList();
-
+	
 		for (Integer productId : order.getProductid()) {
-			String url = PRODUCT_SERVICE_URL + "/" + productId;
+			String url = PRODUCT_SERVICE_URL + "/exists/" + productId;
 			Product product = restTemplate.getForObject(url, Product.class);
 
 			if (product == null) {
 				throw new IllegalArgumentException("Product ID " + productId + " does not exist.");
 			}
 			productList.add(product);
+			
 		}
-          
+		order.setProductlist(productList);
+
 		return orderRepo.save(order);
 	}
 
